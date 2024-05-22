@@ -46,7 +46,7 @@ app.UseStaticFiles(new StaticFileOptions
 
 
 
-app.MapGet("/GetCatalog", () =>
+app.MapGet("/api/GetCatalog", () =>
 {
     _DBContext.testingDB();
 
@@ -56,6 +56,18 @@ app.MapGet("/GetCatalog", () =>
 .WithOpenApi();
 
 
+app.MapPost("/api/items", async (Item item) =>
+{
+    if (item == null)
+    {
+        return Results.BadRequest("User is null.");
+    }
+
+   await _DBContext.InsertUser(item);
+
+    return Results.Ok(new { message = "User created successfully.", item });
+}).WithName("CreateItem")
+.WithOpenApi(); // Add OpenAPI metadata
 
 
 
